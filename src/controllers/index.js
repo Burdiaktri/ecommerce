@@ -28,4 +28,9 @@ const getSignIn = (req, res, next) => {
 const postSignIn = (req, res, next) => {
   
 }
-module.exports = {getIndex, getSignUp, postSignUp, getProfile, getSignIn, postSignIn}
+
+const getLogOut = (req, res, next) => {
+    req.logout()
+    res.redirect('/')
+}
+module.exports = {getIndex, getSignUp, postSignUp, getProfile, getSignIn, postSignIn, getLogOut}
