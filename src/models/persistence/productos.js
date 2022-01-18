@@ -2,6 +2,7 @@ const mongoose = require ('mongoose')
 const {Schema, model} = mongoose
 
 const productosSchema = new Schema ({
+ 
     nombre: String,
     timestamp: Date,
     descripcion: String,
@@ -11,5 +12,12 @@ const productosSchema = new Schema ({
     stock: Number
 
 })
+const carritoSchema = new Schema ({
+    _id: Number,
+    timestamp: Date,
+    productos: [{type: Schema.ObjectId, ref: 'productos'}]
+})
 
-module.exports = model('productos', productosSchema)
+ const dbCarrito = model('carrito', carritoSchema)
+ const dbProducto = model('productos', productosSchema)
+ module.exports ={dbProducto, dbCarrito}

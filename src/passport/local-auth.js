@@ -1,6 +1,6 @@
 const passport = require('passport')
 const localStrategy = require('passport-local').Strategy
-
+const {transporter, mailOptions} = require('../nodemailer/nodemailer')
 
 const User = require('../models/persistence/user')
 
@@ -28,6 +28,7 @@ passport.use('local-signup', new localStrategy({
     newUser.password = newUser.encryptPassword(password)
     console.log(newUser)
     await newUser.save()
+    const info = await transporter.sendMail(mailOptions)
     done(null, newUser)
    }
 }))

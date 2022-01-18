@@ -1,4 +1,7 @@
-<h1>Profile</h1>
-<form action="/logout">
-    <button type="submit">Log out</button>
-</form>
+<%- layout('layouts/main.ejs') %>
+
+<div class="card card-body">
+    <h3>Bienvenido</h3>
+    <%= user.email %>
+
+</div>

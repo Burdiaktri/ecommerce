@@ -1,5 +1,6 @@
 const passport = require('passport')
-
+const createTransport = require('nodemailer')
+const {transporter, mailOptions} = require('../nodemailer/nodemailer')
 
 const getIndex = (req, res) => {
     try{
@@ -10,8 +11,13 @@ const getIndex = (req, res) => {
     }
    
 }
-const getSignUp = (req, res, next) => {
-    res.render('signup')
+const getSignUp = async (req, res, next) => {
+    try{
+        res.render('signup')
+    }catch (err){
+        console.log(err)
+    }
+    
 }
 
 const postSignUp = (req, res, next) => {

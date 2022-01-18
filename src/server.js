@@ -9,6 +9,7 @@ const path = require ('path')
 const passport = require('passport')
 const session = require('express-session')
 const flash = require('connect-flash')
+const dotenv = require('dotenv').config()
 require('./database/db.js') 
 require('./passport/local-auth')
 
@@ -23,24 +24,24 @@ app.set('view engine', 'ejs')
 
 
 
-
 //middlewares
 app.use(errorHandlerMiddleware)
 app.use(morgan('dev'))
 app.use(session({
-    secret: 'mysecret',
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false
 }))
 app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
-
 app.use((req, res, next) => {
     app.locals.signUpMessage = req.flash('signUpMessage')
     app.locals.signInMessage = req.flash('signInMessage')
+    app.locals.user = req.user
     next()
 })
+
 //routes
 
 app.use("/productos", productoRouter)

@@ -1,15 +1,13 @@
 const {Carrito} = require ('../models/ecommerce/carrito.js') 
 const Response = require ('../models/server/response.js') 
-// const dbCarrito = require('../models/persistence/carrito.js')
+const {dbCarrito} = require('../models/persistence/productos.js')
 
-// const carrito = new Carrito()
 
 const listarCarrito = async (req, res, next) => {
     try{
-        let carrito = await dbCarrito.findAll({
-            attributes: ['id', 'timestamp', 'productosid']
-        })
+        let carrito = await dbCarrito.find({})
         res.send(new Response(carrito))
+        console.log(carrito)
     } catch (error){
         next(error)
         console.log( err, 'Error en listar carrito')
@@ -18,13 +16,9 @@ const listarCarrito = async (req, res, next) => {
 }
 
 const listarProductosCarrito = async (req, res, next) => {
-    const {productosid} = req.params
+    const {productos} = req.params
     try{
-        const carrito = await dbCarrito.findAll({
-            where: {
-                productid
-            }
-        })
+        const carrito = await dbCarrito.findAll({})
         !carrito 
         ? res.status(404).send(new Response(response, 'No se encuentra usuario', 404))
         : res.send(new Response(carrito))
@@ -38,13 +32,11 @@ const listarProductosCarrito = async (req, res, next) => {
 }
 
 const crearCarrito = async (req, res, next) => {
-    let {timestamp, userid, productid} = req.body
+    let {timestamp, productos} = req.body
 	try {
-		
 		let carrito = await dbCarrito.create({
             timestamp,
-            userid,
-            productid
+            productos
         })
 		res.send(new Response(carrito))
 	} catch (error) {
