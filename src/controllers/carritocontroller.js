@@ -1,12 +1,15 @@
 const {Carrito} = require ('../models/ecommerce/carrito.js') 
 const Response = require ('../models/server/response.js') 
 const {dbCarrito} = require('../models/persistence/productos.js')
+const {options, client} = require('../twilio/twilio')
 
 
 const listarCarrito = async (req, res, next) => {
     try{
         let carrito = await dbCarrito.find({})
-        res.send(new Response(carrito))
+        const message = await client.messages.create(options)
+        res.send(new Response(carrito, {data: message}))
+
         console.log(carrito)
     } catch (error){
         next(error)

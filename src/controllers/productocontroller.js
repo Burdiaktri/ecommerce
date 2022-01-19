@@ -1,21 +1,22 @@
 const {Producto} = require ('../models/ecommerce/productos.js')
 const Response = require ('../models/server/response.js')
 const {dbProducto} = require ('../models/persistence/productos.js')
+const logger = require('../log4js/logs')
 
-const listarProductos = async (req, res,) => {
+const listarProductos = async (req, res, next) => {
     try {
 	    let response = await dbProducto.find({})
         response
             ? res.send(new Response(response))
             : res.status(404).send(new Response(response, 'producto no encontrado', 404 ))
+    
     } catch (error){
-        // next(error)
-        console.log('Error en listar productos')
-        console.log(error)
+        next(error)
+        logger.error('Error en listar productos')
+ 
     }
 	
 }
-
 const agregarProductos = async (req, res, next) => {
     const {id, nombre,  descripcion, codigo, url, precio, stock} = req.body
         try {
@@ -33,6 +34,7 @@ const agregarProductos = async (req, res, next) => {
     
         } catch (error) {
             next(error)
+            logger.error('Error en agregar productos')
         }
 
 }
@@ -48,8 +50,7 @@ const actualizarProductos = async (req, res, next) => {
         : res.status(404).send(new Response('Producto no encontrado', 404))
     
         }catch (error){
-            console.log('Error en actualizar productos')
-            console.log(error)
+            logger.error('Error en actualizar productos')
             next(error)
         } 
 }
@@ -64,7 +65,7 @@ const borrarProductos = async (req, res, next) => {
                 : res.status(404).send(new Response('producto no encontrado', 404))
             
         } catch(error){
-            console.log('Error en borrar productos')
+            logger.error('Error en borrar productos')
             next(error)
         }
 }

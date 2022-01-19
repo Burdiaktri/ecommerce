@@ -1,6 +1,4 @@
 const passport = require('passport')
-const createTransport = require('nodemailer')
-const {transporter, mailOptions} = require('../nodemailer/nodemailer')
 
 const getIndex = (req, res) => {
     try{
