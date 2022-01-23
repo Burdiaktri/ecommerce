@@ -1,4 +1,3 @@
-const {Producto} = require ('../models/ecommerce/productos.js')
 const Response = require ('../models/server/response.js')
 const {dbProducto} = require ('../models/persistence/productos.js')
 const logger = require('../log4js/logs')
