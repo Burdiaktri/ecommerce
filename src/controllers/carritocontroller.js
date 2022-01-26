@@ -1,15 +1,13 @@
 const Response = require ('../models/server/response.js') 
-const {dbCarrito} = require('../models/persistence/productos.js')
-const {options, client} = require('../twilio/twilio')
+const {getCarrito, getProductosCarrito, createCarrito} = require('../apiServices/carritoServices')
+const {options, client} = require('../services/twilio/twilio')
 
 
 const listarCarrito = async (req, res, next) => {
     try{
-        let carrito = await dbCarrito.find({})
         const message = await client.messages.create(options)
-        res.send(new Response(carrito, {data: message}))
+        res.send(new Response(await getCarrito(), {data: message}))
 
-        console.log(carrito)
     } catch (error){
         next(error)
         console.log( err, 'Error en listar carrito')
@@ -20,10 +18,9 @@ const listarCarrito = async (req, res, next) => {
 const listarProductosCarrito = async (req, res, next) => {
     const {productos} = req.params
     try{
-        const carrito = await dbCarrito.findAll({})
-        !carrito 
-        ? res.status(404).send(new Response(response, 'No se encuentra usuario', 404))
-        : res.send(new Response(carrito))
+        !getProductosCarrito()
+        ? res.status(404).send(new Response('No se encuentra productos', 404))
+        : res.send(new Response(await getProductosCarrito()))
        
             
     }catch (error){
@@ -34,13 +31,9 @@ const listarProductosCarrito = async (req, res, next) => {
 }
 
 const crearCarrito = async (req, res, next) => {
-    let {timestamp, productos} = req.body
+    let data = req.body
 	try {
-		let carrito = await dbCarrito.create({
-            timestamp,
-            productos
-        })
-		res.send(new Response(carrito))
+		res.send(new Response(await createCarrito(data)))
 	} catch (error) {
 		next(error)
 	}

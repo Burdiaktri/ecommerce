@@ -4,7 +4,7 @@ const numCPUs = os.cpus().length
 const app = require('./src/server.js')
 const MODO = process.argv[3]
 const PORT = process.env.PORT || 8080
-
+require('./db') 
 
 const server = app.listen(PORT, () =>{
     console.log(`Servidor inicializado en puerto ${server.address().port}`)

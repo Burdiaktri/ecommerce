@@ -10,8 +10,8 @@ const passport = require('passport')
 const session = require('express-session')
 const flash = require('connect-flash')
 const dotenv = require('dotenv').config()
-require('./database/db.js') 
-require('./passport/local-auth')
+
+require('./services/passport/local-auth')
 
 const app = express()
 
