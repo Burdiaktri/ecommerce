@@ -5,11 +5,11 @@ const {options, client} = require('../services/twilio/twilio')
 
 const listarCarrito = async (req, res, next) => {
     try{
-        const message = await client.messages.create(options)
-        res.send(new Response(await getCarrito(), {data: message}))
+        // const message = await client.messages.create(options)
+        res.send(new Response(await getCarrito() /*, {data: message} */))
 
-    } catch (error){
-        next(error)
+    } catch (err){
+        next(err)
         console.log( err, 'Error en listar carrito')
     }
 	

@@ -4,13 +4,16 @@ const numCPUs = os.cpus().length
 const app = require('./src/server.js')
 const MODO = process.argv[3]
 const PORT = process.env.PORT || 8080
-require('./db') 
+const dbConnection = require('./src/models/persistence/index')
+const db = new dbConnection(process.env.ACTIVE_PERSISTENCE)
 
 const server = app.listen(PORT, () =>{
     console.log(`Servidor inicializado en puerto ${server.address().port}`)
+    db.instance
+        .initializateSchema()
+        .then((response) => console.log(response))
+        .catch((err) => console.log(err.message))
 })
-
-
 server.on('error', error => console.log(`Error en servidor ${error}`))
 
 // if (MODO == "CLUSTER"){
@@ -29,3 +32,4 @@ server.on('error', error => console.log(`Error en servidor ${error}`))
 //     }  
 // }
   
+module.exports = db.instance
